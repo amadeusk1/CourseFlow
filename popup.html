@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>D2L Tracker</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <p class="kicker">University of Calgary</p>
+        <h1>D2L due dates</h1>
+        <p id="term-label" class="term">Current semester only</p>
+      </div>
+      <button id="scan" type="button">Scan</button>
+    </header>
+
+    <p id="status" class="status">Log into D2L, then scan your courses.</p>
+    <div id="banner" class="banner hidden"></div>
+
+    <div id="toolbar" class="toolbar hidden">
+      <label><input type="checkbox" id="all-d2l" checked /> D2L items</label>
+      <label><input type="checkbox" id="all-outline" checked /> Outline guesses</label>
+      <button id="download" type="button">Download .ics</button>
+    </div>
+
+    <section id="lists" class="hidden">
+      <h2>From D2L</h2>
+      <ul id="d2l-list" class="list"></ul>
+      <h2>From course outlines</h2>
+      <p class="hint">Uncheck anything that isn’t a real deadline. Official D2L dates win when both exist.</p>
+      <ul id="outline-list" class="list"></ul>
+    </section>
+
+    <ul id="warnings" class="warnings"></ul>
+    <p class="foot">
+      Host: d2l.ucalgary.ca · Load unpacked from
+      <code>chrome://extensions</code>
+    </p>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
