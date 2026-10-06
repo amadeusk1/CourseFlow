@@ -1,8 +1,8 @@
 {
-  "name": "ucalgary-d2l-due-dates",
+  "name": "d2l-tracker",
   "version": "1.0.0",
   "private": true,
-  "description": "Chrome extension that collects UCalgary D2L due dates and course-outline deadlines into an .ics file.",
+  "description": "Chrome extension that shows D2L deadlines on a calendar and exports an .ics file.",
   "type": "module",
   "scripts": {
     "test:parser": "node test-parser.mjs"

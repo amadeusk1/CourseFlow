@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "D2L Tracker",
   "version": "1.0.0",
-  "description": "Collect due dates from D2L and course outline PDFs, then download a calendar .ics file.",
+  "description": "Collect due dates from D2L and course outline PDFs, then show them on a calendar and download a .ics file.",
   "action": {
     "default_title": "D2L Tracker",
     "default_icon": {
