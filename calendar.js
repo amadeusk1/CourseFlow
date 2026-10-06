@@ -3,6 +3,7 @@ import {
   compactChipLabel,
   courseKey,
   isPlaceholderTitle,
+  kindClass,
   prettyTitle,
   shortCourse,
   sourceLabel
@@ -70,17 +71,6 @@ function termLabelText() {
   return state.term?.label || currentTerm().label;
 }
 
-function formatDue(iso) {
-  return new Date(iso).toLocaleString("en-CA", {
-    timeZone: TZ,
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit"
-  });
-}
-
 function formatMonth({ year, month }) {
   return new Date(year, month - 1, 1).toLocaleString("en-CA", {
     month: "long",
@@ -123,7 +113,7 @@ function itemsOn(ymd) {
 
 function row(item) {
   const li = document.createElement("li");
-  li.className = courseClass(item);
+  li.className = [courseClass(item), kindClass(item)].filter(Boolean).join(" ");
   const box = document.createElement("input");
   box.type = "checkbox";
   box.checked = Boolean(item.included);
@@ -237,7 +227,7 @@ function renderCalendar() {
     const shown = items.slice(0, 4);
     for (const item of shown) {
       const chip = document.createElement("span");
-      chip.className = `chip ${courseClass(item)}`;
+      chip.className = ["chip", courseClass(item), kindClass(item)].filter(Boolean).join(" ");
       if (!item.included) chip.classList.add("excluded");
       chip.textContent = compactChipLabel(item);
       chip.title = `${shortCourse(item.courseCode, item.courseName)}: ${prettyTitle(item.title, item)}`;

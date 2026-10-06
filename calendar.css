@@ -333,6 +333,16 @@ h1 {
 .chip.c6 { background: #ffe4e6; color: #9f1239; }
 .chip.c7 { background: #f3e8ff; color: #6b21a8; }
 
+.chip.kind-exam {
+  background: #f4d5da;
+  color: #8f0d26;
+}
+
+.chip.kind-assignment {
+  background: #f3e2a0;
+  color: #6e5414;
+}
+
 .more {
   font-size: 11px;
   color: var(--muted);
@@ -393,6 +403,16 @@ h1 {
 .list li.c5 { border-left: 4px solid #14b8a6; }
 .list li.c6 { border-left: 4px solid #f43f5e; }
 .list li.c7 { border-left: 4px solid #a855f7; }
+
+.list li.kind-exam {
+  background: #f8e8eb;
+  border-left-color: #c8102e;
+}
+
+.list li.kind-assignment {
+  background: #f7edc8;
+  border-left-color: #c9a227;
+}
 
 .list input {
   margin-top: 3px;
