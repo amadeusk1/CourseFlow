@@ -35,3 +35,54 @@ if (!/exam/.test(titles)) throw new Error("missing final exam");
 if (/office hours/.test(titles)) throw new Error("office hours should be skipped");
 if (/11:59/.test(titles) && items.length > 5) throw new Error("policy line leaked");
 console.log("parser ok", items.length, "items");
+
+const table = [
+  "Assessment Due Date / Location Weight",
+  "Participation marks will be obtained by attending and performing activities in lectures and tutorials, providing peer feedback about the course to the instructor.",
+  "Assignment One, Part One",
+  "Sep 23 2026",
+  "5%",
+  "Assignment One, Part Two",
+  "Oct 09 2026",
+  "10%",
+  "Term Test 1",
+  "Oct 14 2026 Out-of-class",
+  "15%",
+  "Term Test 2",
+  "Nov 04 2026 Out-of-class",
+  "Assignment Two, Part One",
+  "Nov 06 2026",
+  "Assignment Two, Part Two",
+  "Nov 20 2026"
+].join("\n");
+
+const tableItems = parseDeadlines(table, course, "F26 PHIL 314 LEC 02 APPROVED.pdf");
+const tableTitles = tableItems.map((i) => i.title.toLowerCase()).join(" | ");
+console.log("table", JSON.stringify(tableItems.map((i) => ({ title: i.title, due: i.dueAt.slice(0, 10) })), null, 2));
+if (!/assignment one, part one/.test(tableTitles)) throw new Error("missing assignment one part one");
+if (!/assignment one, part two/.test(tableTitles)) throw new Error("missing assignment one part two");
+if (!/term test 1/.test(tableTitles)) throw new Error("missing term test 1");
+if (!/term test 2/.test(tableTitles)) throw new Error("missing term test 2");
+if (!/assignment two, part one/.test(tableTitles)) throw new Error("missing assignment two part one");
+if (!/assignment two, part two/.test(tableTitles)) throw new Error("missing assignment two part two");
+if (/participation/.test(tableTitles)) throw new Error("participation should not be a deadline");
+console.log("table parser ok", tableItems.length, "items");
+
+const messy = [
+  "CLASS SCHEDULE",
+  "Week 5 Marketing Mix - Price Chapter 10 Group Learning Activity October 23",
+  "Topic 5 available TBA Assignment C October 7",
+  "Topic 6 available TBA October 9",
+  "National Day for Truth and Reconciliation September 30",
+  "Homework 5 due October 2 2359"
+].join("\n");
+const messyItems = parseDeadlines(messy, course, "MKTG_341.pdf");
+const messyTitles = messyItems.map((i) => i.title);
+if (messyTitles.some((t) => /^keting/i.test(t))) throw new Error("Marketing Mix was split on Mar");
+if (!messyTitles.some((t) => /marketing mix/i.test(t))) throw new Error("missing Marketing Mix");
+if (!messyTitles.some((t) => /^assignment c$/i.test(t))) throw new Error("Topic/TBA row should become Assignment C");
+if (messyTitles.some((t) => /topic 6/i.test(t))) throw new Error("TBA-only topic should be skipped");
+if (messyTitles.some((t) => /truth/i.test(t))) throw new Error("holiday should be skipped");
+if (messyTitles.some((t) => /2359/.test(t))) throw new Error("2359 should not be a title");
+if (!messyTitles.some((t) => /homework 5/i.test(t))) throw new Error("missing Homework 5");
+console.log("messy titles ok", messyTitles);

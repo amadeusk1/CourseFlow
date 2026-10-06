@@ -1,4 +1,5 @@
 import { currentTerm } from "./lib/term.js";
+import { prettyTitle, shortCourse, sourceLabel } from "./lib/labels.js";
 
 const scanBtn = document.getElementById("scan");
 const downloadBtn = document.getElementById("download");
@@ -44,15 +45,15 @@ function row(item) {
   const body = document.createElement("div");
   const title = document.createElement("div");
   title.className = "title";
-  title.textContent = item.title;
+  title.textContent = prettyTitle(item.title, item);
   const tag = document.createElement("span");
   tag.className = `tag ${item.source === "d2l" ? "official" : item.confidence || "medium"}`;
-  tag.textContent = item.source === "d2l" ? "D2L" : item.confidence || "outline";
+  tag.textContent = sourceLabel(item);
   title.appendChild(tag);
 
   const meta = document.createElement("div");
   meta.className = "meta";
-  meta.textContent = `${item.courseCode || item.courseName} · ${formatDue(item.dueAt)}`;
+  meta.textContent = `${shortCourse(item.courseCode, item.courseName)} · ${formatDue(item.dueAt)}`;
 
   body.append(title, meta);
   if (item.evidence) {
