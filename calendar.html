@@ -8,37 +8,42 @@
   </head>
   <body>
     <header class="top">
-      <div>
+      <div class="brand">
         <p class="kicker">University of Calgary</p>
         <h1>D2L Tracker</h1>
-        <p id="term-label" class="term">Current semester</p>
       </div>
+      <p id="status" class="status">Log into D2L, then scan your courses.</p>
       <div class="actions">
         <button id="scan" type="button">Scan D2L</button>
         <button id="download" type="button">Download .ics</button>
       </div>
     </header>
 
-    <p id="status" class="status">Log into D2L, then scan your courses.</p>
     <div id="banner" class="banner hidden"></div>
     <ul id="warnings" class="warnings"></ul>
 
     <main class="layout">
       <section class="calendar-panel">
         <div class="month-bar">
-          <button id="prev-month" type="button" aria-label="Previous month">‹</button>
-          <h2 id="month-label">This month</h2>
-          <button id="next-month" type="button" aria-label="Next month">›</button>
-          <button id="this-month" type="button" class="ghost">This month</button>
+          <div class="month-nav">
+            <button id="prev-month" type="button" aria-label="Previous month">‹</button>
+            <h2 id="month-label">This month</h2>
+            <button id="next-month" type="button" aria-label="Next month">›</button>
+          </div>
+          <p id="term-label" class="term">Current semester</p>
+          <button id="this-month" type="button" class="ghost">Today</button>
         </div>
-        <div class="weekdays">
-          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-          <span>Thu</span><span>Fri</span><span>Sat</span>
+        <div class="cal">
+          <div class="weekdays">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div id="grid" class="grid"></div>
         </div>
-        <div id="grid" class="grid"></div>
       </section>
 
       <aside class="side">
+        <p class="side-kicker">Selected day</p>
         <h2 id="day-heading">Deadlines</h2>
         <p id="day-empty" class="hint">Scan D2L to fill the calendar. Click a day for details.</p>
         <ul id="day-list" class="list"></ul>

@@ -1,5 +1,5 @@
 import { currentTerm } from "./lib/term.js";
-import { prettyTitle, shortCourse, sourceLabel } from "./lib/labels.js";
+import { kindClass, prettyTitle, shortCourse, sourceLabel } from "./lib/labels.js";
 
 const scanBtn = document.getElementById("scan");
 const downloadBtn = document.getElementById("download");
@@ -35,6 +35,8 @@ function formatDue(iso) {
 
 function row(item) {
   const li = document.createElement("li");
+  const kind = kindClass(item);
+  if (kind) li.className = kind;
   const box = document.createElement("input");
   box.type = "checkbox";
   box.checked = Boolean(item.included);

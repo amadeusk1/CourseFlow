@@ -80,7 +80,12 @@ const messyItems = parseDeadlines(messy, course, "MKTG_341.pdf");
 const messyTitles = messyItems.map((i) => i.title);
 if (messyTitles.some((t) => /^keting/i.test(t))) throw new Error("Marketing Mix was split on Mar");
 if (!messyTitles.some((t) => /marketing mix/i.test(t))) throw new Error("missing Marketing Mix");
-if (!messyTitles.some((t) => /^assignment c$/i.test(t))) throw new Error("Topic/TBA row should become Assignment C");
+if (messyTitles.filter((t) => /^assignment c$/i.test(t)).length !== 1) {
+  throw new Error("Assignment C should appear once");
+}
+if (messyItems.some((i) => i.dueAt.startsWith("2359"))) {
+  throw new Error("2359 must not be parsed as a year");
+}
 if (messyTitles.some((t) => /topic 6/i.test(t))) throw new Error("TBA-only topic should be skipped");
 if (messyTitles.some((t) => /truth/i.test(t))) throw new Error("holiday should be skipped");
 if (messyTitles.some((t) => /2359/.test(t))) throw new Error("2359 should not be a title");

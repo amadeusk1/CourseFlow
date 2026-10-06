@@ -7,6 +7,10 @@
   --muted: #6b6258;
   --official: #1f6b4a;
   --guess: #8a5a12;
+  --exam: #8f0d26;
+  --exam-bg: #f4d5da;
+  --hw: #6e5414;
+  --hw-bg: #f3e2a0;
 }
 
 * {
@@ -139,6 +143,18 @@ h2 {
   padding: 8px 0;
   border-bottom: 1px solid var(--line);
   align-items: start;
+}
+
+.list li.kind-exam {
+  background: var(--exam-bg);
+  border-left: 3px solid var(--red);
+  padding-left: 8px;
+}
+
+.list li.kind-assignment {
+  background: var(--hw-bg);
+  border-left: 3px solid #c9a227;
+  padding-left: 8px;
 }
 
 .list input {

@@ -1,5 +1,12 @@
 import { currentTerm } from "./lib/term.js";
-import { chipLabel, prettyTitle, shortCourse, sourceLabel } from "./lib/labels.js";
+import {
+  compactChipLabel,
+  courseKey,
+  isPlaceholderTitle,
+  prettyTitle,
+  shortCourse,
+  sourceLabel
+} from "./lib/labels.js";
 
 const TZ = "America/Edmonton";
 const scanBtn = document.getElementById("scan");
@@ -90,12 +97,33 @@ function formatDayHeading(ymd) {
   });
 }
 
+function courseClass(item) {
+  const key = courseKey(item);
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return `c${h % 8}`;
+}
+
+function timeLabel(iso) {
+  return new Date(iso).toLocaleString("en-CA", {
+    timeZone: TZ,
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
 function itemsOn(ymd) {
-  return (state.items || []).filter((item) => item.dueAt && ymdFromIso(item.dueAt) === ymd);
+  return (state.items || []).filter((item) => {
+    if (!item.dueAt || ymdFromIso(item.dueAt) !== ymd) return false;
+    if (/national day for truth|truth and reconciliation/i.test(item.title || "")) return false;
+    if (isPlaceholderTitle(item.title) && item.source !== "d2l") return false;
+    return true;
+  });
 }
 
 function row(item) {
   const li = document.createElement("li");
+  li.className = courseClass(item);
   const box = document.createElement("input");
   box.type = "checkbox";
   box.checked = Boolean(item.included);
@@ -111,20 +139,14 @@ function row(item) {
   title.className = "title";
   title.textContent = prettyTitle(item.title, item);
   const tag = document.createElement("span");
-  tag.className = `tag ${item.source === "d2l" ? "official" : item.confidence || "medium"}`;
+  tag.className = "tag";
   tag.textContent = sourceLabel(item);
   title.appendChild(tag);
 
   const meta = document.createElement("div");
   meta.className = "meta";
-  meta.textContent = `${shortCourse(item.courseCode, item.courseName)} · ${formatDue(item.dueAt)}`;
+  meta.textContent = `${shortCourse(item.courseCode, item.courseName)} · ${timeLabel(item.dueAt)}`;
   body.append(title, meta);
-  if (item.evidence) {
-    const ev = document.createElement("div");
-    ev.className = "evidence";
-    ev.textContent = item.evidence;
-    body.append(ev);
-  }
   li.append(box, body);
   return li;
 }
@@ -200,6 +222,8 @@ function renderCalendar() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "day";
+    const weekday = weekdayOf(cell.year, cell.month, cell.day);
+    if (weekday === 0 || weekday === 6) btn.classList.add("weekend");
     if (cell.outside) btn.classList.add("outside");
     if (ymd === today) btn.classList.add("today");
     if (ymd === selectedDay) btn.classList.add("selected");
@@ -210,12 +234,12 @@ function renderCalendar() {
     btn.append(num);
 
     const items = itemsOn(ymd);
-    const shown = items.slice(0, 3);
+    const shown = items.slice(0, 4);
     for (const item of shown) {
       const chip = document.createElement("span");
-      chip.className = `chip ${item.source === "d2l" ? "d2l" : "outline"}`;
+      chip.className = `chip ${courseClass(item)}`;
       if (!item.included) chip.classList.add("excluded");
-      chip.textContent = chipLabel(item);
+      chip.textContent = compactChipLabel(item);
       chip.title = `${shortCourse(item.courseCode, item.courseName)}: ${prettyTitle(item.title, item)}`;
       btn.append(chip);
     }
